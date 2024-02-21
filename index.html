@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #slider-container {
+      width: 300px;
+      margin: 20px;
+      position: relative;
+    }
+
+    #slider {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    #slider-thumb {
+      width: 20px;
+      height: 20px;
+      background-color: #4CAF50;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-50%);
+    }
+
+    #slider-value {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+
+<div id="slider-container">
+  <div id="slider">
+    <div id="slider-thumb"></div>
+  </div>
+  <div id="slider-value">0</div>
+</div>
+
+<script>
+  const sliderContainer = document.getElementById('slider-container');
+  const slider = document.getElementById('slider');
+  const thumb = document.getElementById('slider-thumb');
+  const valueDisplay = document.getElementById('slider-value');
+
+  let isDragging = false;
+
+  const updateSlider = (event) => {
+    const sliderRect = sliderContainer.getBoundingClientRect();
+    let position = (event.clientX - sliderRect.left) / sliderRect.width;
+
+    // Clamp position to the range [0, 1]
+    position = Math.max(0, Math.min(1, position));
+
+    const value = Math.round(position * 100);
+
+    const thumbWidth = thumb.offsetWidth;
+    const thumbPosition = position * (sliderRect.width - thumbWidth);
+
+    thumb.style.left = {thumbPosition};
+    valueDisplay.textContent = value;
+  };
+
+  thumb.addEventListener('mousedown', () => {
+    isDragging = true;
+  });
+
+  document.addEventListener('mousemove', (event) => {
+    if (isDragging) {
+      updateSlider(event);
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+
+</body>
+</html>
